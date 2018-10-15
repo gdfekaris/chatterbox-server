@@ -2,6 +2,7 @@
 
 const App = function() {
   this.server = 'http://127.0.0.1:3000/classes/messages';
+
   //'http://parse.rpt.hackreactor.com/chatterbox/classes/messages?order=-createdAt&limit=250';
 };
 
