@@ -11,6 +11,9 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
+var messageLog = require('./message-log.js');
+var fs = require('fs');
+
 var statusCode = 200;
 var errorCode = 404;
 var successCode = 201;
@@ -45,6 +48,11 @@ var requestHandler = function(request, response) {
   // You will need to change this if you are sending something
   // other than plain text, like JSON or HTML.
   headers['Content-Type'] = 'application/json';
+
+  if (request.method === 'OPTIONS') {
+    response.writeHead(statusCode, headers);
+    response.end();
+  }
 
   if (request.url === '/classes/messages' && request.method === 'GET') {
     response.writeHead(statusCode, headers);

@@ -10,9 +10,6 @@ describe('Node Server Request Listener Function', function() {
     var req = new stubs.request('/classes/messages', 'GET');
     var res = new stubs.response();
 
-    // console.log(util.inspect(req, {showHidden: false, depth: null}));
-    // console.log(util.inspect(res, {showHidden: false, depth: null}));
-
     handler.requestHandler(req, res);
 
     expect(res._responseCode).to.equal(200);
@@ -107,4 +104,34 @@ describe('Node Server Request Listener Function', function() {
     expect(res._ended).to.equal(true);
   });
 
+  // additional tests
+
+  it('Should answer POST requests for /classes/messages with a 201 status code', function() {
+    // This is a fake server request. Normally, the server would provide this,
+    // but we want to test our function's behavior totally independent of the server code
+    var stubMsg = {
+      username: 'Jono',
+      text: 'Do my bidding!'
+    };
+    var req = new stubs.request('/classes/messages', 'POST', stubMsg);
+    var res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    expect(res._responseCode).to.equal(201);
+  });
+
+  it('Should respond to PUT request with 405 status code', function() {
+
+    var stubMsg = {
+      username: 'Jono',
+      text: 'Do my bidding!'
+    };
+    var req = new stubs.request('/classes/messages', 'PUT', stubMsg);
+    var res = new stubs.response();
+
+    handler.requestHandler(req, res);
+
+    expect(res._responseCode).to.equal(405);
+  });
 });
