@@ -51,7 +51,7 @@ App.prototype.init = function() {
 App.prototype.send = function(message) {
   $.ajax({
     type: 'POST',
-    url: 'http://parse.rpt.hackreactor.com/chatterbox/classes/messages',
+    url: this.server, //'http://parse.rpt.hackreactor.com/chatterbox/classes/messages',
     data: JSON.stringify(message),
     contentType: 'application/json',
     success: function(data) {

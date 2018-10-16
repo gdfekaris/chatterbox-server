@@ -4,6 +4,7 @@ var expect = require('chai').expect;
 describe('server', function() {
   it('should respond to GET requests for /classes/messages with a 200 status code', function(done) {
     request('http://127.0.0.1:3000/classes/messages', function(error, response, body) {
+      console.log(`this is error : ${error}`);
       expect(response.statusCode).to.equal(200);
       done();
     });
@@ -73,5 +74,54 @@ describe('server', function() {
     });
   });
 
+  //additional tests
+  it('Should respond to POST request with 201 status code', function(done) {
+    var requestParams = {
+      method: 'POST',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+      json: {
+        username: 'Jim',
+        text: 'Do my laundry!'
+      }
+    };
+    request(requestParams, function(error, response, body) {
+      expect(response.statusCode).to.equal(201);
+      done();
+    });
+  });
+
+  it('Should respond to PUT request with 405 status code', function(done) {
+    var requestParams = {
+      method: 'PUT',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+      json: {
+        username: 'Jim',
+        text: 'Do my laundry!'
+      }
+    };
+    request(requestParams, function (error, response, body) {
+      expect(response.statusCode).to.equal(405);
+      done();
+    });
+  });
+
+  it('Should set error to true if invalid method', function(done) {
+    var requestParams = {
+      method: 'PUT',
+      uri: 'http://127.0.0.1:3000/classes/messages',
+      json: {
+        username: 'Jim',
+        text: 'Do my laundry!'
+      }
+    };
+    request(requestParams, function (error, response, body) {
+      error = false;
+      if (requestParams.method !== 'GET' || requestParams.method !== 'POST') {
+        error = true;
+        expect(error).to.equal(true);
+        done();
+      }
+    });
+  });
 
 });

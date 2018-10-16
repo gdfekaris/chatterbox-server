@@ -14,7 +14,7 @@ this file and include it in basic-server.js so that it actually works.
 var statusCode = 200;
 var errorCode = 404;
 var successCode = 201;
-
+var preventCode = 405;
 var messages = {results: []};
 
 
@@ -49,37 +49,31 @@ var requestHandler = function(request, response) {
   if (request.url === '/classes/messages' && request.method === 'GET') {
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(messages));
-  }
-
-  if (request.url === '/classes/messages' && request.method === 'POST') {
-    var data;
+  } else if (request.url === '/classes/messages' && request.method === 'POST') {
     request.on('data', function(chunk) {
       var data = JSON.parse(chunk);
       messages.results.push(data);
     });
     response.writeHead(successCode, headers);
     response.end(JSON.stringify(messages));
-  }
-
-  if (request.url === '/destructionofmyliver') {
-    response.end('BOOM!');
-  }
-
-
-
+  } else if (request.method === 'PUT') {
+    response.writeHead(preventCode, headers);
+    response.end();
+  } else {
   // .writeHead() writes to the request line and headers of the response,
   // which includes the status and all headers.
 
 
-  // Make sure to always call response.end() - Node may not send
-  // anything back to the client until you do. The string you pass to
-  // response.end() will be the body of the response - i.e. what shows
-  // up in the browser.
-  //
-  // Calling .end "flushes" the response's internal buffer, forcing
-  // node to actually send all the data over to the client.
-  response.writeHead(errorCode, headers);
-  response.end();
+    // Make sure to always call response.end() - Node may not send
+    // anything back to the client until you do. The string you pass to
+    // response.end() will be the body of the response - i.e. what shows
+    // up in the browser.
+    //
+    // Calling .end "flushes" the response's internal buffer, forcing
+    // node to actually send all the data over to the client.
+    response.writeHead(errorCode, headers);
+    response.end();
+  }
 };
 
 // These headers will allow Cross-Origin Resource Sharing (CORS).

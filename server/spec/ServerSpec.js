@@ -1,6 +1,7 @@
 var handler = require('../request-handler');
 var expect = require('chai').expect;
 var stubs = require('./Stubs');
+const util = require('util');
 
 describe('Node Server Request Listener Function', function() {
   it('Should answer GET requests for /classes/messages with a 200 status code', function() {
@@ -8,6 +9,9 @@ describe('Node Server Request Listener Function', function() {
     // but we want to test our function's behavior totally independent of the server code
     var req = new stubs.request('/classes/messages', 'GET');
     var res = new stubs.response();
+
+    // console.log(util.inspect(req, {showHidden: false, depth: null}));
+    // console.log(util.inspect(res, {showHidden: false, depth: null}));
 
     handler.requestHandler(req, res);
 
