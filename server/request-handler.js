@@ -11,7 +11,6 @@ this file and include it in basic-server.js so that it actually works.
 *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html.
 
 **************************************************************/
-var messageLog = require('./message-log.js');
 var fs = require('fs');
 var util = require('util');
 
@@ -56,6 +55,14 @@ var requestHandler = function(request, response) {
   }
 
   if (request.url === '/classes/messages' && request.method === 'GET') {
+    // fs.readFile('./server/messages.txt', function(err, data) {
+    //   // if (err) {
+    //   //   console.log(err);
+    //   // }
+    //   var newData = JSON.parse(data);
+    //   response.writeHead(statusCode, headers);
+    //   response.end(JSON.stringify(newData));
+    // });
     response.writeHead(statusCode, headers);
     response.end(JSON.stringify(messages));
   } else if (request.url === '/classes/messages' && request.method === 'POST') {
@@ -63,7 +70,7 @@ var requestHandler = function(request, response) {
       var data = JSON.parse(chunk);
       messages.results.push(data);
       var textMessages = JSON.stringify(messages);
-      fs.writeFile('./server/messages.txt', textMessages, function () {
+      fs.writeFile('./server/messages.txt', textMessages, {flag: 'a+'}, function () {
         console.log('Message saved!');
       });
     });

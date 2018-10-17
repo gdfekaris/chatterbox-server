@@ -1,1 +1,0 @@
-{"results":[{"username":"g","text":"super dog!","roomname":"All Rooms"},{"username":"g","text":"super cat!","roomname":"All Rooms"}]}
