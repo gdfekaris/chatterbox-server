@@ -13,6 +13,7 @@ this file and include it in basic-server.js so that it actually works.
 **************************************************************/
 var messageLog = require('./message-log.js');
 var fs = require('fs');
+var util = require('util');
 
 var statusCode = 200;
 var errorCode = 404;
@@ -61,6 +62,10 @@ var requestHandler = function(request, response) {
     request.on('data', function(chunk) {
       var data = JSON.parse(chunk);
       messages.results.push(data);
+      var textMessages = JSON.stringify(messages);
+      fs.writeFile('./server/messages.txt', textMessages, function () {
+        console.log('Message saved!');
+      });
     });
     response.writeHead(successCode, headers);
     response.end(JSON.stringify(messages));
